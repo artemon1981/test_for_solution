@@ -107,3 +107,9 @@ GET api/cars/
 ```sh
 GET api/cars/{id}/
 ```
+
+## Для получения подробной документации по API используйте:
+```sh
+[GET /swagger/](http://localhost:8000/swagger/)
+[GET /redoc/](http://localhost:8000/redoc/)
+```
