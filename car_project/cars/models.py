@@ -2,14 +2,6 @@ from django.contrib.auth.models import User
 from django.db import models
 
 
-class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    # Другие поля профиля
-
-    def __str__(self):
-        return self.user.username
-
-
 class Car(models.Model):
     TRANSMISSION_CHOICES = [
         ('Manual', 'Manual'),
@@ -25,7 +17,7 @@ class Car(models.Model):
     ]
     brand = models.CharField(max_length=100)
     model = models.CharField(max_length=100)
-    year = models.PositiveIntegerField
+    year = models.PositiveIntegerField(default=2000)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     fuel_type = models.CharField(max_length=20, choices=FUEL_CHOICES)
     transmission = models.CharField(max_length=20, choices=TRANSMISSION_CHOICES)

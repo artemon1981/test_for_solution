@@ -1,6 +1,7 @@
 from django.contrib.auth import authenticate, login
 
-from rest_framework import generics, status, viewsets
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import generics, filters,status, viewsets
 from rest_framework.exceptions import NotFound, ValidationError
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
@@ -60,6 +61,8 @@ class CarViewSet(viewsets.ModelViewSet):
     queryset = Car.objects.all()
     serializer_class = CarSerializer
     permission_classes = [IsAuthenticated]
+    filter_backends = [DjangoFilterBackend, filters.OrderingFilter, filters.SearchFilter]
+    filterset_fields = ['brand', 'model', 'year', 'fuel_type', 'transmission', 'miliage', 'price']
     ordering_fields = '__all__'
     ordering = ['id']
 
