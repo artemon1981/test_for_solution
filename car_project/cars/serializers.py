@@ -116,5 +116,4 @@ class UserLoginSerializer(serializers.Serializer):
         
         This method is used by the serializer to get the user object.
         """
-
         return obj.get('user', None)

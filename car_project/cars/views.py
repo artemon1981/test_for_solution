@@ -8,13 +8,14 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 
+from cars.mixins import AuthMixin
 from cars.models import Car
 from cars.serializers import CarSerializer, UserRegistrationSerializer, UserLoginSerializer
 
 logger = logging.getLogger(__name__)
 
 
-class RegisterView(generics.CreateAPIView):
+class RegisterView(generics.CreateAPIView,AuthMixin):
     """
     API view to register a new user.
     """
@@ -37,18 +38,8 @@ class RegisterView(generics.CreateAPIView):
         logger.warning(f'Registration failed: {serializer.errors}')
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def get_tokens_for_user(self, user):
-        """
-        Generate JWT tokens for the user.
-        """
-        refresh = RefreshToken.for_user(user)
-        return {
-            'refresh': str(refresh),
-            'access': str(refresh.access_token),
-        }
 
-
-class LoginView(generics.GenericAPIView):
+class LoginView(generics.GenericAPIView,AuthMixin):
     """
     API view to log in an existing user.
     """
@@ -71,16 +62,6 @@ class LoginView(generics.GenericAPIView):
         logger.warning(f'Login failed: {serializer.errors}')
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def get_tokens_for_user(self, user):
-        """
-        Generate JWT tokens for the user.
-        """
-        refresh = RefreshToken.for_user(user)
-        return {
-            'refresh': str(refresh),
-            'access': str(refresh.access_token),
-        }
-
 
 class CarViewSet(viewsets.ModelViewSet):
     """
@@ -90,7 +71,7 @@ class CarViewSet(viewsets.ModelViewSet):
     serializer_class = CarSerializer
     permission_classes = [IsAuthenticated]
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter, filters.SearchFilter]
-    filterset_fields = ['brand', 'model', 'year', 'fuel_type', 'transmission', 'mileage', 'price']
+    filterset_fields = ['brand', 'model', 'year', 'fuel_type', 'transmission', 'miliage', 'price']
     ordering_fields = '__all__'
     ordering = ['id']
 
